@@ -52,7 +52,11 @@ button.addEventListener('click', function() {
 			title: 'Foo',
 			view: table,
 			backshadeColor: '#aaa',
+			ipadOverride: false
 	    });
+	    // if you set ipadOverride to true, then you will have to
+	    // win.add(pop) on iPad, otherwise, don't add it to the win
+	    // when running on iPad or you'll get strange view problems
 	    if(osname!='ipad') win.add(pop);
 	    // if you run this on iPad, you must provide a view param
 	    // in the show() method or it will fail
