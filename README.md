@@ -7,18 +7,46 @@ Custom Popover, that mimics Ti.UI.iPad.createPopover()
 
 Works on iPhone, iPod, and iPad. Android in the works.
 
-Create like:
 ```
-var table = someViewLikeATable;
-pop = popover.createPopover({
-   title: 'Foo',
-   view: table,
-   backshadeColor: '#aaa', // optional background shading on non-iPad
-});
-if(Ti.Platform.osname != 'ipad') win.add(pop);
-// if you run this on iPad, you must provide a view param
-// in the show() method or it will fail
-pop.show({view: button});
+Create like:
+	var table = someViewLikeATable;
+    pop = popover.createPopover({
+		title: 'Foo',
+		view: table,
+		backshadeColor: '#aaa', // optional background shading on custom popover
+		ipadOverride: false // optional, to use custom rather than native popover on iPad
+    });
+    // if you set ipadOverride to true, then you will have to
+    // win.add(pop) on iPad, otherwise, don't add it to the win
+    // when running on iPad or you'll get strange view problems
+    if(osname!='ipad') win.add(pop);
+Open with:
+    if(Ti.Platform.osname != 'ipad') win.add(pop);
+    // if you run this on iPad, you must provide a view param
+    // in the show() method or it will fail
+    pop.show({view: button});
+
+See popover.js and the defaults{} object for a list of parameters that can be passed in
+
+@params:
+	arguments = {
+		view: Ti.UI.View to show within popover
+		backshadeColor: color string, with custom popover, sets semi-transparent overlay color behind popover
+		ipadOverride: boolean, if true, use custom rather than native popover
+		width: number, width of popover (must be number not string)
+		height: number, height of popover (must be number not string)
+		top: number, position of popover (must be number not string)
+		left: number, position of popover (must be number not string)
+		noarrow: boolean, not currently implemented
+		backgroundGradient: Ti.UI.Gradient definition,
+		borderRadius: number, not suggested on Android
+		backgroundColor: color string
+		padding: size of border of custom popover around left/right/bottom edges
+	}
+
+Returns:
+	if on iPad and args.ipadOverride null/false, a Ti.UI.iPad.Popover
+	otherwise a Ti.UI.View
 
 ```
 See popover.js and the defaults{} object for a list of parameters that can be passed in
