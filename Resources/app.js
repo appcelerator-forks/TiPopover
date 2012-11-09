@@ -1,4 +1,4 @@
-var popover = require('popover').popover,
+var popover = require('popover'),
     tabGroup = Titanium.UI.createTabGroup(),
     pop;
 
@@ -16,11 +16,20 @@ var tab1 = Titanium.UI.createTab({
     window:win
 });
 
+// Click this button to open the popover
 var button = Ti.UI.createButton({
     title: 'pop'
 });
-win.setLeftNavButton(button);
+if(Ti.Platform.osname=='android') {
+	button.top = 5; 
+	button.left = 5;
+	win.add(button);
+} else {
+	win.setLeftNavButton(button);
+}
 
+
+// You need a view to go in your popover
 var table = Ti.UI.createTableView({
     data: [
         Ti.UI.createTableViewRow({title: 'Row 1'}),
@@ -30,15 +39,28 @@ var table = Ti.UI.createTableView({
 });
 table.addEventListener('click', function(e) {
     alert('Table clicked');
-    pop.close();
+    pop.hide();
+	win.remove(pop);
 });
-
+// now take care of showing/hiding the popover
+var popovershowing = false;
 button.addEventListener('click', function() {
-     pop = new popover({
-        title: 'A Table',
-        view: table
-    });
-    pop.open();
+	if(!popovershowing) {
+		popovershowing = true;
+	    pop = popover.createPopover({
+			title: 'Foo',
+			view: table,
+			backshadeColor: '#aaa',
+	    });
+	    win.add(pop);
+	    // if you run this on iPad, you must provide a view param
+	    // in the show() method or it will fail
+	    pop.show({view: button});
+	} else {
+		popovershowing = false;
+		pop.hide();
+		win.remove(pop);
+	}
 });
 
 tabGroup.addTab(tab1);

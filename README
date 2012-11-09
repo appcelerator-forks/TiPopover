@@ -1,3 +1,29 @@
+Custom Popover, that mimics Ti.UI.iPad.createPopover()
+	- by @skypanther as a largely rewritten fork of https://github.com/mattapperson/TiPopover/
+	- published at https://github.com/skypanther/TiPopover
+
+Works on iPhone, iPod, and should work on iPad & Android but they're having some issues at the moment
+
+Create like:
+	var table = someViewLikeATable;
+    pop = popover.createPopover({
+		title: 'Foo',
+		view: table,
+		backshadeColor: '#aaa', // optional background shading on non-iPad
+    });
+    win.add(pop);
+    // if you run this on iPad, you must provide a view param
+    // in the show() method or it will fail
+    pop.show({view: button});
+
+See popover.js and the defaults{} object for a list of parameters that can be passed in
+
+Doesn't use any graphics. Though, I might use some once I add back in the arrow/pointer that was in Matt's original.
+
+(Matt's original readme follows)
+----------------------------------
+
+
 Titanium iPhone pop-over
 
 This CommonJs module gives you iPad style pop-overs on iPhone…
