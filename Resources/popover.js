@@ -12,7 +12,7 @@
 			view: table,
 			backshadeColor: '#aaa', // optional background shading on non-iPad
 	    });
-	    win.add(pop);
+	    if(Ti.Platform.osname != 'ipad') win.add(pop);
 	    // if you run this on iPad, you must provide a view param
 	    // in the show() method or it will fail
 	    pop.show({view: button});
@@ -65,16 +65,8 @@ var Popover = function(_args) {
 	        title: (_args.title) ? _args.title : defaults.title,
 		});
 		// calculate view dimensions
-		var viewWidth = (_args.width) ? _args.width-defaults.padding*2 : defaults.width-defaults.padding*2,
-			viewHeight = (_args.height) ? _args.height-(defaults.padding*2+40) : defaults.height-(defaults.padding*2+40);
 		// then add the view
 		if(_args.view) {
-			_args.view.width = viewWidth;
-			_args.view.height = viewHeight;
-			_args.view.top = 0;
-			_args.view.left = 0;
-			_args.view.bottom = null;
-			_args.view.right = null;
 			pop.add(_args.view);
 		}
 		if(_args.leftNavButton) pop.leftNavButton = _args.leftNavButton;

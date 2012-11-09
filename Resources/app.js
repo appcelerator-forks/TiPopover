@@ -1,6 +1,7 @@
 var popover = require('popover'),
     tabGroup = Titanium.UI.createTabGroup(),
-    pop;
+    pop
+    osname = Ti.Platform.osname;
 
 
 //
@@ -20,7 +21,7 @@ var tab1 = Titanium.UI.createTab({
 var button = Ti.UI.createButton({
     title: 'pop'
 });
-if(Ti.Platform.osname=='android') {
+if(osname=='android') {
 	button.top = 5; 
 	button.left = 5;
 	win.add(button);
@@ -40,7 +41,7 @@ var table = Ti.UI.createTableView({
 table.addEventListener('click', function(e) {
     alert('Table clicked');
     pop.hide();
-	win.remove(pop);
+	if(osname!='ipad') win.remove(pop);
 });
 // now take care of showing/hiding the popover
 var popovershowing = false;
@@ -52,14 +53,14 @@ button.addEventListener('click', function() {
 			view: table,
 			backshadeColor: '#aaa',
 	    });
-	    win.add(pop);
+	    if(osname!='ipad') win.add(pop);
 	    // if you run this on iPad, you must provide a view param
 	    // in the show() method or it will fail
 	    pop.show({view: button});
 	} else {
 		popovershowing = false;
 		pop.hide();
-		win.remove(pop);
+		if(osname!='ipad') win.remove(pop);
 	}
 });
 

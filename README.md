@@ -5,7 +5,7 @@ Custom Popover, that mimics Ti.UI.iPad.createPopover()
 - by @skypanther as a largely rewritten fork of https://github.com/mattapperson/TiPopover/
 - published at https://github.com/skypanther/TiPopover
 
-Works on iPhone, iPod, and should work on iPad & Android but they're having some issues at the moment
+Works on iPhone, iPod, and iPad. Android in the works.
 
 Create like:
 ```
@@ -15,7 +15,7 @@ pop = popover.createPopover({
    view: table,
    backshadeColor: '#aaa', // optional background shading on non-iPad
 });
-win.add(pop);
+if(Ti.Platform.osname != 'ipad') win.add(pop);
 // if you run this on iPad, you must provide a view param
 // in the show() method or it will fail
 pop.show({view: button});
@@ -27,7 +27,6 @@ Doesn't use any graphics. Though, I might use some once I add back in the arrow/
 
 ## Known issues
 
-- On iPad, the child view is offset, shown centered in the window, and behind the popover!
 - On Android, force closes with a message about a hashMap problem
 - No arrow/pointer on non-iPad
 
