@@ -1,3 +1,5 @@
+# TiPopover
+
 Custom Popover, that mimics Ti.UI.iPad.createPopover()
 
 - by @skypanther as a largely rewritten fork of https://github.com/mattapperson/TiPopover/
@@ -9,9 +11,9 @@ Create like:
 ```
 var table = someViewLikeATable;
 pop = popover.createPopover({
-	title: 'Foo',
-	view: table,
-	backshadeColor: '#aaa', // optional background shading on non-iPad
+   title: 'Foo',
+   view: table,
+   backshadeColor: '#aaa', // optional background shading on non-iPad
 });
 win.add(pop);
 // if you run this on iPad, you must provide a view param
@@ -23,7 +25,16 @@ See popover.js and the defaults{} object for a list of parameters that can be pa
 
 Doesn't use any graphics. Though, I might use some once I add back in the arrow/pointer that was in Matt's original.
 
+## Known issues
+
+- On iPad, the child view is offset, shown centered in the window, and behind the popover!
+- On Android, force closes with a message about a hashMap problem
+- No arrow/pointer on non-iPad
+
+
+
 (Matt's original readme follows)
+
 ----------------------------------
 
 
