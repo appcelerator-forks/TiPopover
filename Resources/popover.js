@@ -75,7 +75,7 @@ var defaults = {
         endPoint: { x: '100%', y: '0' },
         colors: [ { color: '#555', offset: 0}, { color: '#2a2a2a', offset: 0.5 }, { color: 'transparent', offset: 1 } ],
    },
-   borderRadius: (is.ios) ? 8 : 0,
+   borderRadius: 8,
    backgroundColor: '#2a2a2a',
    padding: 5
 }
@@ -182,6 +182,7 @@ var Popover = function(_args) {
 	    pop.addEventListener('postlayout', showme);
 	    pop.addEventListener('click', function(e) {
 	        if(e.source === pop || e.source === backshade) {
+	        	if(_args.hideCallback) _args.hideCallback();
 	        	pop.animate(a2);
 		        setTimeout(function() {pop.hide();}, duration)
 	        }

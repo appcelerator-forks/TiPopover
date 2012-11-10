@@ -5,7 +5,7 @@ Custom Popover, that mimics Ti.UI.iPad.createPopover()
 - by @skypanther as a largely rewritten fork of https://github.com/mattapperson/TiPopover/
 - published at https://github.com/skypanther/TiPopover
 
-Works on iPhone, iPod, and iPad. Android in the works.
+Works on iPhone, iPod, and iPad. Mostly on Android.
 
 ```
 Create like:
@@ -14,12 +14,20 @@ Create like:
 		title: 'Foo',
 		view: table,
 		backshadeColor: '#aaa', // optional background shading on custom popover
-		ipadOverride: false // optional, to use custom rather than native popover on iPad
+		ipadOverride: false, // optional, to use custom rather than native popover on iPad
+		hideCallback: function() { popovershowing = false;} // see note below
     });
     // if you set ipadOverride to true, then you will have to
     // win.add(pop) on iPad, otherwise, don't add it to the win
     // when running on iPad or you'll get strange view problems
-    if(osname!='ipad') win.add(pop);
+    if(osname == 'ipad') pop.show({view: button});  // android will die horribly if an obj is passed to show()
+    else pop.show();
+
+	// hideCallback() -- in the example, we set a var that tracks whether the popover
+	//	is showing (so we don't show it again). With this param, pass in a function that sets
+	//	your tracking var to false. This will be called when the user taps the backshade.
+	//	Without this, the next tap to show the popover would fail, the third would show it again.
+
 Open with:
     if(Ti.Platform.osname != 'ipad') win.add(pop);
     // if you run this on iPad, you must provide a view param
@@ -55,7 +63,7 @@ Doesn't use any graphics. Though, I might use some once I add back in the arrow/
 
 ## Known issues
 
-- On Android, force closes with a message about a hashMap problem
+- On Android, works fine on first display. Subsequent show() calls display the popover without its child view.
 - No arrow/pointer on non-iPad
 
 

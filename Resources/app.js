@@ -32,6 +32,7 @@ if(osname=='android') {
 
 // You need a view to go in your popover
 var table = Ti.UI.createTableView({
+	backgroundColor: 'white', /* for Android */
     data: [
         Ti.UI.createTableViewRow({title: 'Row 1'}),
         Ti.UI.createTableViewRow({title: 'Row 2'}),
@@ -40,8 +41,10 @@ var table = Ti.UI.createTableView({
 });
 table.addEventListener('click', function(e) {
     alert('Table clicked');
+    popovershowing = false;
     pop.hide();
 	if(osname!='ipad') win.remove(pop);
+	pop = null;
 });
 // now take care of showing/hiding the popover
 var popovershowing = false;
@@ -52,7 +55,8 @@ button.addEventListener('click', function() {
 			title: 'Foo',
 			view: table,
 			backshadeColor: '#aaa',
-			ipadOverride: false
+			ipadOverride: false,
+			hideCallback: function() { popovershowing = false;}
 	    });
 	    // if you set ipadOverride to true, then you will have to
 	    // win.add(pop) on iPad, otherwise, don't add it to the win
@@ -60,11 +64,13 @@ button.addEventListener('click', function() {
 	    if(osname!='ipad') win.add(pop);
 	    // if you run this on iPad, you must provide a view param
 	    // in the show() method or it will fail
-	    pop.show({view: button});
+	    if(osname == 'ipad') pop.show({view: button});  // android will die horribly if an obj is passed to show()
+	    else pop.show();
 	} else {
 		popovershowing = false;
 		pop.hide();
 		if(osname!='ipad') win.remove(pop);
+		pop = null;
 	}
 });
 
