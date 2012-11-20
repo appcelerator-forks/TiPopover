@@ -74,10 +74,14 @@ var defaults = {
         startPoint: { x: '100%', y: '100%' },
         endPoint: { x: '100%', y: '0' },
         colors: [ { color: '#555', offset: 0}, { color: '#2a2a2a', offset: 0.5 }, { color: 'transparent', offset: 1 } ],
-   },
-   borderRadius: 8,
-   backgroundColor: '#2a2a2a',
-   padding: 5
+	},
+	buttonGradient: {
+        type: 'linear',
+        colors: [ { color: '#aaa'}, { color: '#1a48a4' } ],
+	},
+	borderRadius: 8,
+	backgroundColor: '#2a2a2a',
+	padding: 5
 }
 
 var Popover = function(_args) {
@@ -95,7 +99,22 @@ var Popover = function(_args) {
 		if(_args.view) {
 			pop.add(_args.view);
 		}
-		if(_args.leftNavButton) pop.leftNavButton = _args.leftNavButton;
+		if(_args.leftNavButton) {
+			if(typeof _args.leftNavButton == 'string') {
+				var leftButton = Ti.UI.createButton({
+					title: _args.leftNavButton,
+					style: (osname=='iphone' || osname=='ipad') ? Titanium.UI.iPhone.SystemButtonStyle.PLAIN : null
+				});
+				leftButton.addEventListener('click', function() {
+		        	if(_args.hideCallback && typeof _args.hideCallback == 'function') _args.hideCallback();
+		        	pop.animate(a2);
+			        setTimeout(function() {pop.hide();}, duration)
+				});
+				pop.leftNavButton = leftButton;
+			} else {
+				pop.leftNavButton = _args.leftNavButton;
+			}
+		}
 		if(_args.rightNavButton) pop.rightNavButton = _args.rightNavButton;
 	} else {
 		// on iPhone & android, return a concocted popover
@@ -145,7 +164,36 @@ var Popover = function(_args) {
 		});
 		titleView.add(title);
 		if(_args.leftNavButton) {
-			titleView.add(_args.leftNavButton);
+			if(typeof _args.leftNavButton == 'string') {
+				var leftButton = Ti.UI.createButton({
+					title: _args.leftNavButton,
+					left: 8,
+					bottom: 8,
+					width: 50,
+					height: 30,
+					borderRadius: 8,
+					font: {
+						fontSize: 12,
+						fontWeight: 'bold'
+					},
+					backgroundColor: 'transparent',
+					backgroundImage: 'none',
+					borderColor: '#444',
+					borderWidth: 1,
+					backgroundGradient: defaults.buttonGradient,
+					color: '#fff',
+					style: (is.ios) ? Ti.UI.iPhone.SystemButtonStyle.PLAIN : null
+				});
+				leftButton.addEventListener('click', function() {
+		        	if(_args.hideCallback && typeof _args.hideCallback == 'function') _args.hideCallback();
+		        	pop.animate(a2);
+			        setTimeout(function() {pop.hide();}, duration)
+				});
+				titleView.add(leftButton);
+			} else {
+				_args.leftNavButton.left = 5;
+				titleView.add(_args.leftNavButton);
+			}
 		}
 		if(_args.rightNavButton) {
 			titleView.add(_args.rightNavButton);
@@ -182,7 +230,7 @@ var Popover = function(_args) {
 	    pop.addEventListener('postlayout', showme);
 	    pop.addEventListener('click', function(e) {
 	        if(e.source === pop || e.source === backshade) {
-	        	if(_args.hideCallback) _args.hideCallback();
+	        	if(_args.hideCallback && typeof _args.hideCallback == 'function') _args.hideCallback();
 	        	pop.animate(a2);
 		        setTimeout(function() {pop.hide();}, duration)
 	        }

@@ -30,33 +30,41 @@ if(osname=='android') {
 }
 
 
-// You need a view to go in your popover
-var table = Ti.UI.createTableView({
-	backgroundColor: 'white', /* for Android */
-    data: [
-        Ti.UI.createTableViewRow({title: 'Row 1'}),
-        Ti.UI.createTableViewRow({title: 'Row 2'}),
-        Ti.UI.createTableViewRow({title: 'Row 3'})
-    ]
-});
-table.addEventListener('click', function(e) {
-    alert('Table clicked');
-    popovershowing = false;
-    pop.hide();
-	if(osname!='ipad') win.remove(pop);
-	pop = null;
-});
 // now take care of showing/hiding the popover
 var popovershowing = false;
 button.addEventListener('click', function() {
 	if(!popovershowing) {
+
+		// You need a view to go in your popover
+		var table = Ti.UI.createTableView({
+			backgroundColor: 'white', /* for Android */
+		    data: [
+		        Ti.UI.createTableViewRow({title: 'Row 1'}),
+		        Ti.UI.createTableViewRow({title: 'Row 2'}),
+		        Ti.UI.createTableViewRow({title: 'Row 3'})
+		    ]
+		});
+		table.addEventListener('click', function(e) {
+			e.row.hasCheck = !e.row.hasCheck;
+			var rows = table.sections[0].rows;
+			for(var i=0,j=rows.length;i<j;i++) {
+				if(e.row != rows[i]) {
+					rows[i].hasCheck = false;
+				}
+			}
+		});
+
 		popovershowing = true;
 	    pop = popover.createPopover({
 			title: 'Foo',
 			view: table,
-			backshadeColor: '#aaa',
+			backshadeColor: '#888',
 			ipadOverride: false,
-			hideCallback: function() { popovershowing = false;}
+			hideCallback: function() { 
+				popovershowing = false;
+				if(osname!='ipad') win.remove(pop);
+			},
+			leftNavButton: 'Done'
 	    });
 	    // if you set ipadOverride to true, then you will have to
 	    // win.add(pop) on iPad, otherwise, don't add it to the win
