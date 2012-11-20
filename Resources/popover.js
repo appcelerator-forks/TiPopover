@@ -103,12 +103,11 @@ var Popover = function(_args) {
 			if(typeof _args.leftNavButton == 'string') {
 				var leftButton = Ti.UI.createButton({
 					title: _args.leftNavButton,
-					style: (osname=='iphone' || osname=='ipad') ? Titanium.UI.iPhone.SystemButtonStyle.PLAIN : null
+					style: Titanium.UI.iPhone.SystemButtonStyle.DONE
 				});
 				leftButton.addEventListener('click', function() {
 		        	if(_args.hideCallback && typeof _args.hideCallback == 'function') _args.hideCallback();
-		        	pop.animate(a2);
-			        setTimeout(function() {pop.hide();}, duration)
+		        	pop.hide();
 				});
 				pop.leftNavButton = leftButton;
 			} else {
@@ -176,11 +175,11 @@ var Popover = function(_args) {
 						fontSize: 12,
 						fontWeight: 'bold'
 					},
-					backgroundColor: 'transparent',
+					backgroundColor: (is.ios) ? 'transparent' : '#1a48a4',
 					backgroundImage: 'none',
 					borderColor: '#444',
 					borderWidth: 1,
-					backgroundGradient: defaults.buttonGradient,
+					backgroundGradient: (is.ios) ? defaults.buttonGradient : null,
 					color: '#fff',
 					style: (is.ios) ? Ti.UI.iPhone.SystemButtonStyle.PLAIN : null
 				});

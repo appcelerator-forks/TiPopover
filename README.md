@@ -15,7 +15,12 @@ Create like:
 		view: table,
 		backshadeColor: '#aaa', // optional background shading on custom popover
 		ipadOverride: false, // optional, to use custom rather than native popover on iPad
-		hideCallback: function() { popovershowing = false;} // see note below
+		hideCallback: function() { 
+			// called when backshade or Done button is used to disclose the popover
+			popovershowing = false;
+			if(osname!='ipad') win.remove(pop);
+		},
+		leftNavButton: 'Done' // string or Ti.UI.Button
     });
     // if you set ipadOverride to true, then you will have to
     // win.add(pop) on iPad, otherwise, don't add it to the win
@@ -27,6 +32,11 @@ Create like:
 	//	is showing (so we don't show it again). With this param, pass in a function that sets
 	//	your tracking var to false. This will be called when the user taps the backshade.
 	//	Without this, the next tap to show the popover would fail, the third would show it again.
+	
+	// leftNavButton -- optional button for the popover's title bar. Pass a string and a button
+	// 	with that label is created; such a button would close the popover when tapped. Pass a 
+	//	Ti.UI.Button to have it do something other than close.
+	// rightNavButton exists, and is untested, accepts ONLY Ti.UI.Button
 
 Open with:
     if(Ti.Platform.osname != 'ipad') win.add(pop);
